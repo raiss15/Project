@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import './App.css';
 import Form from './components/form';
 import ExpenditureTable from './components/expenditureTable';
 import IncomeCalculator from './components/incomeCalculator';
