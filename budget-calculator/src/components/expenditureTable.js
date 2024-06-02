@@ -1,30 +1,29 @@
 import React, {useState} from 'react';
 
-function ExpenditureTable({expenditures}) {
+function ExpenditureTable({ expenditures }) {
+    const categories = ['All', 'Rent', 'Food', 'Utilities', 'Entertainment', 'Miscellaneous'];
 
-    const categorries = ['All', 'Rent', 'Food', 'Utilities', 'Miscellaneous'];
     const [filterCategory, setFilterCategory] = useState('All');
 
-    //Filter the expenditures based on the selected category
+    // Filter expenditures based on the selected category
     const filteredExpenditures = filterCategory === 'All' ? expenditures : expenditures.filter(exp => exp.category === filterCategory);
+                
+    // Calculate the total expenditure for the selected category
+    const filteredTotal = filteredExpenditures.reduce((acc, exp) => acc + parseFloat(exp.amount), 0);
 
-    //Calculate the total expenditure for the selected category
-
-    const filterTotal = FilterExpenditures.reduce((acc, exp) => acc + parsefloat (exp.amount), 0);
-
-    //calculate total expenditure per category or overall depending on the selected filter
-    const calculateTotals =() => {
-
-        const totals = filterExpenditures.reduce((acc, exp) => {
-            acc[exp.category] = (acc[exp.category] || 0) + parseFloat(exp.amount);  
+    // Calculate total expenditures per category or overall depending on the selected filter
+    const calculateTotals = () => {
+        const totals = filteredExpenditures.reduce((acc, exp) => {
+            acc[exp.category] = (acc[exp.category] || 0) + parseFloat(exp.amount);
             return acc;
         }, {});
-        return Object.entries(totals).map(([category, total]) => ({category, total}));
+        return Object.entries(totals).map(([category, total]) => ({ category, total }));
     };
 
-    const totalsToShow = calculateTotals();
 
-    return (
+     const totalsToShow = calculateTotals();
+
+     return (
         <div>
             <h2 className="expenses-title">Expenses</h2>
            
