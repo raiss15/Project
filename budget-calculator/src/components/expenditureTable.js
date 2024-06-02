@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import { Pie } from 'react-chartjs-2';
+import 'chart.js/auto'
 
 function ExpenditureTable({ expenditures }) {
     const categories = ['All', 'Rent', 'Food', 'Utilities', 'Entertainment', 'Miscellaneous'];
@@ -20,8 +22,28 @@ function ExpenditureTable({ expenditures }) {
         return Object.entries(totals).map(([category, total]) => ({ category, total }));
     };
 
+    //Prepare chart data based on filtered expenditures
+    const calculateChartData = () => {
+        const totals = filteredExpenditures.reduce((acc, exp) =>{
+            acc [exp.category] = (acc[exp.category] || 0) + parseFloat(exp.amount);
+            return acc;
+        }, {});
+
+        return{
+            lables: Object.keys(totals),
+            datasets: [
+                {
+                    data: Object.values(totals),
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#E7E9ED', '#4BC0C0'],
+                    hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#E7E9ED', '#4BC0C0']
+                }
+            ]
+        };
+        };
+    
 
      const totalsToShow = calculateTotals();
+     const chartData = calculateChartData();
 
      return (
         <div>
@@ -65,8 +87,12 @@ function ExpenditureTable({ expenditures }) {
                     </tr>
                 </tfoot>
             </table>
-
-
+                    {filteredExpenditures.length > 0 && (
+                        <div className="piechart">
+                            <h3>Expennditure Breakdown for {filterCategory === 'All' ? 'All Categories' : filterCategory}</h3>
+                            <Pie data={chartData} />
+                        </div>
+                    )}
        </div>
     );
 }

@@ -86,3 +86,14 @@ h2, h3 {
   margin-bottom: 30px;     
   font-size: 20px;
 }
+
+/* Chart area */
+.piechart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  width: 500px;
+  height:550px;
+ margin-bottom: 30px;
+}
